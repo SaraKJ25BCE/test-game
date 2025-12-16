@@ -18,6 +18,7 @@ def get_en_blasters():
     global en_blasters
     return en_blasters
 
+
 def is_seen(s):
     x, y = s.p
     lim = (WIDTH/2+s.size)*1.1
@@ -25,30 +26,29 @@ def is_seen(s):
     return t
 
 
+def shoot_blaster(x,y):
+    global blasters
+    s = Blaster()
+    s.size = BLASTER_SIZE
+    s.color = BLASTER_COLOR
+    s.p = (x,y)
+    blasters.append(s)
+
+def shoot_d_blaster(x,y):
+    global d_blasters
+    s = Blaster()
+    s.size = BLASTER_SIZE
+    s.color = D_BLASTER_COLOR
+    s.p = (x,y)
+    d_blasters.append(s)
+
 def shoot_en_blaster(x,y):
     global en_blasters
     s = Blaster()
     s.size = BLASTER_SIZE
     s.color = EN_BLASTER_COLOR
     s.p = (x,y)
-    #s.size = (math.exp(-((1/random.random())-1)))*BLASTER_MAX_SIZE
     en_blasters.append(s)
-
-def shoot_d_blaster(x,y):
-    global d_blasters
-    s = Blaster()
-    s.size = BLASTER_SIZE
-    s.p = (x,y)
-    #s.size = (math.exp(-((1/random.random())-1)))*BLASTER_MAX_SIZE
-    d_blasters.append(s)
-
-def shoot_blaster(x,y):
-    global blasters
-    s = Blaster()
-    s.size = BLASTER_SIZE
-    s.p = (x,y)
-    #s.size = (math.exp(-((1/random.random())-1)))*BLASTER_MAX_SIZE
-    blasters.append(s)
 
 
 def purge():
@@ -92,4 +92,3 @@ def blasterlogic(dt):
     move(dt)
     purge()
     
-
