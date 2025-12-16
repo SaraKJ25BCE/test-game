@@ -31,6 +31,32 @@ def get_enemies():
     global enemies
     return enemies
 
+def make_meteor(random_x=False):
+    global meteors
+    s = Meteor()
+    ct=random.randint(25,85)
+    s.color = (ct,ct,ct)
+    s.size = (abs(random.random()-0.5)+0.5)*METEOR_MAX_SIZE #between 0.5 to 1
+
+    n = 5+int(random.random()*METEOR_MAX_VERTICES)
+    s.vertices_num = n
+    theta = math.pi*2/n
+    for i in range(n):
+        rx = (abs(random.random()-0.5)+0.5)*s.size
+        ry = (abs(random.random()-0.5)+0.5)*s.size
+        x,y = rx*math.cos(i*theta),ry*math.sin(i*theta)
+        s.vertices.append((x+2*s.size,y+2*s.size))
+    
+    
+    s.spin = ANGULAR_VELOCITY_METEOR/s.vertices_num
+    
+    x = WIDTH/2+s.size
+    if random_x:
+        x = abs(random.random()-0.5)*WIDTH
+    y = (random.random()-0.5)*HEIGHT
+    s.p = (x,y)
+    meteors.append(s)
+
 def explode(s,p=(0,0)):  #if enemy, coordinates are given. else meteor.
     global hits1,hitse1
     blasters = get_blasters()
@@ -98,34 +124,7 @@ def is_seen(s):
     t = (-lim <= x) and (x <= lim)
     return t
 
-def make_meteor(random_x=False):
-    global meteors
-    s = Meteor()
-    s.color = (random.randint(0,85),random.randint(0,85),random.randint(0,85))
-    s.size = (abs(random.random()-0.5)+0.5)*METEOR_MAX_SIZE
 
-    n = 5+int(random.random()*METEOR_MAX_VERTICES)
-    s.vertices_num = n
-    theta = math.pi*2/n
-    low = math.sqrt((s.size*s.size)+(s.size*s.size))
-    for i in range (n):
-        rx = (abs(random.random()-0.5)+0.5)*s.size
-        ry = (abs(random.random()-0.5)+0.5)*s.size
-        x,y = rx*math.cos(i*theta),ry*math.sin(i*theta)
-        if math.sqrt((rx*rx)+(ry*ry))<low/1.19:
-            #low = math.sqrt((rx*rx)+(ry*ry))
-            s.vertices_shade.append((x+2*s.size,y+2*s.size))
-        s.vertices.append((x+2*s.size,y+2*s.size))
-    
-
-    s.spin = ANGULAR_VELOCITY_METEOR/s.vertices_num
-    
-    x = WIDTH/2+s.size
-    if random_x:
-        x = abs(random.random()-0.5)*WIDTH
-    y = (random.random()-0.5)*HEIGHT
-    s.p = (x,y)
-    meteors.append(s)
 
 
 def make_enemy():
@@ -207,11 +206,6 @@ def transform(x,y,w,dt):
 def spin(dt):
     global meteors
     for s in meteors:
-        for v in s.vertices_shade:
-            x,y = v
-            t = (s.vertices_shade).index(v)
-            a,b = transform(x-2*s.size,y-2*s.size,s.spin,dt)
-            s.vertices_shade[t] = (a+2*s.size,b+2*s.size)
         for v in s.vertices:
             x,y = v
             t = (s.vertices).index(v)
