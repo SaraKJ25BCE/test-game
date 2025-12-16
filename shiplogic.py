@@ -9,8 +9,6 @@ ci1,ci2,ci3,ci4 = 1,1,1,1
 cdi1,cdi2,cdi3,cdi4 = 1,1,1,1
 ship_hit = 0
 drone_hit = 0
-ship_hitm = 0
-drone_hitm = 0
 
 
 ship = Spaceship()
@@ -30,7 +28,6 @@ def make_ship():
     x = -WIDTH/2
     y = 0
     ship.p = (x,y)
-    #s.size = (math.exp(-((1/random.random())-1)))*STAR_MAX_SIZE
 
 def make_drone():
     global drone
@@ -38,7 +35,6 @@ def make_drone():
     x = -WIDTH/2
     y = 0
     drone.p = (x,y)
-
 
 
 def get_hits():
@@ -77,11 +73,11 @@ def shoot():
     global c
     if c>COOLDOWN:
         x,y = ship.p
-        x+=BLASTER_SIZE-5
+        x+=BLASTER_SIZE
         shoot_blaster(x,y)
         x,y = ship.p
-        x+=BLASTER_SIZE-5
-        y-=ship.size-10
+        x+=BLASTER_SIZE
+        y-=ship.size
         shoot_blaster(x,y)
         c=0
 
